@@ -21,13 +21,18 @@ html {
   scroll-behavior: smooth;
 }
 
+html, body, #root {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   font-weight: 300;
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
-  overflow-x: hidden;
 }
 
 img {
@@ -49,7 +54,7 @@ button {
 }
 
 .section {
-  padding: 6rem 5%;
+  padding: clamp(4rem, 9vw, 6rem) clamp(1rem, 4vw, 5%);
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -103,21 +108,25 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 5%;
+  gap: 1rem;
+  padding: 1.25rem clamp(1rem, 4vw, 5%);
   background: rgba(30, 30, 34, 0.92);
-  /* backdrop-filter: blur(8px); */
+  backdrop-filter: blur(8px);
 }
 
 .logo {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.4rem;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
   letter-spacing: 0.2em;
+  white-space: nowrap;
 }
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 2rem);
   list-style: none;
+  flex-wrap: wrap;
 }
 
 .nav-links a {
@@ -156,7 +165,7 @@ button {
   min-height: 100vh;
   display: flex;
   align-items: flex-end;
-  padding: 8rem 5% 5rem;
+  padding: 8rem clamp(1rem, 4vw, 5%) 5rem;
 }
 
 .hero-img {
@@ -201,7 +210,7 @@ button {
 /* Projects */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
@@ -381,8 +390,8 @@ button {
 /* About */
 .about {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 4rem);
   align-items: center;
   max-width: 1200px;
 }
@@ -409,7 +418,7 @@ button {
 /* Services */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
 }
 
@@ -481,7 +490,8 @@ button {
 .social-links {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
 }
 
 .social-links a {
@@ -523,10 +533,6 @@ button {
 
 /* Responsive */
 @media (max-width: 900px) {
-  .services-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .about {
     grid-template-columns: 1fr;
     gap: 2.5rem;
@@ -534,6 +540,11 @@ button {
 }
 
 @media (max-width: 768px) {
+  .nav {
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+  }
+
   .nav-links {
     display: none;
     position: absolute;
@@ -541,9 +552,11 @@ button {
     left: 0;
     right: 0;
     flex-direction: column;
+    align-items: stretch;
     gap: 0;
-    background: var(--surface-2);
+    background: rgba(35, 35, 39, 0.98);
     padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .nav-links.open {
@@ -552,7 +565,7 @@ button {
 
   .nav-links li a {
     display: block;
-    padding: 0.85rem 5%;
+    padding: 0.85rem clamp(1rem, 4vw, 5%);
   }
 
   .nav-cta {
@@ -563,18 +576,33 @@ button {
     display: flex;
   }
 
-  .projects-grid {
-    grid-template-columns: 1fr;
+  .hero {
+    min-height: 75vh;
+    padding-top: 7rem;
   }
 
   .section {
-    padding: 4rem 5%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .lightbox {
+    padding: 4rem 1rem;
+  }
+
+  .lightbox-arrow {
+    width: 2.5rem;
+    height: 2.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .services-grid {
-    grid-template-columns: 1fr;
+  .logo {
+    letter-spacing: 0.12em;
+  }
+
+  .hero {
+    min-height: 60vh;
   }
 
   .hero-actions {
@@ -584,5 +612,14 @@ button {
   .hero-actions .btn {
     width: 100%;
     text-align: center;
+  }
+
+  .contact-form {
+    max-width: 100%;
+  }
+
+  .social-links {
+    flex-direction: column;
+    align-items: center;
   }
 }
