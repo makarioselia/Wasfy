@@ -190,7 +190,21 @@ function ProjectCarousel({ project }) {
 }
 
 export default function App() {
+  const [isSending, setIsSending] = useState(false)
+  const [formStatus, setFormStatus] = useState('')
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+
+  const handleContactSubmit = (event) => {
+    event.preventDefault()
+    setIsSending(true)
+    const formData = new FormData(event.currentTarget)
+    const message = formData.get('message')
+
+    window.open(`https://wa.me/201211293181?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
+    event.currentTarget.reset()
+    setFormStatus('WhatsApp opened with your message ready to send.')
+    setIsSending(false)
+  }
 
   return (
     <>
@@ -264,11 +278,12 @@ export default function App() {
 
       <section id="contact" className="section contact">
         <h2 className="section-title">Let's Create Something Beautiful.</h2>
-        <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
-          <input type="text" placeholder="Name" required />
-          <input type="email" placeholder="Email" required />
-          <textarea placeholder="Message" rows={5} required />
-          <button type="submit" className="btn btn-gold">Send Inquiry</button>
+        <form className="contact-form" onSubmit={handleContactSubmit}>
+          <textarea name="message" placeholder="Message" rows={5} required />
+          <button type="submit" className="btn btn-gold" disabled={isSending}>
+            {isSending ? 'Opening WhatsApp...' : 'Send on WhatsApp'}
+          </button>
+          {formStatus && <p className="form-status" role="status">{formStatus}</p>}
         </form>
 <div className="social-links">
   <a
@@ -287,7 +302,7 @@ export default function App() {
     Facebook
   </a>
 
-  <a href="mailto:hkerowasfy05@gmail.com">
+  <a href="mailto:kerowasfy05@gmail.com">
     Email
   </a>
 </div>

@@ -494,6 +494,16 @@ button {
   min-height: 120px;
 }
 
+.contact-form button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.form-status {
+  color: var(--gold);
+  font-size: 0.85rem;
+}
+
 .social-links {
   display: flex;
   justify-content: center;
