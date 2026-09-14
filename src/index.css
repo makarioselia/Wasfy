@@ -166,6 +166,7 @@ button {
   display: flex;
   align-items: flex-end;
   padding: 8rem clamp(1rem, 4vw, 5%) 5rem;
+  overflow: hidden;
 }
 
 .hero-img {
@@ -222,6 +223,7 @@ button {
 .project-carousel {
   position: relative;
   overflow: hidden;
+  touch-action: pan-y;
 }
 
 .project-carousel img,
@@ -398,8 +400,13 @@ button {
 
 .about-image img {
   width: 100%;
-  aspect-ratio: 7 / 8;
-  object-fit: cover;
+  height: auto;
+  border-radius: 1rem;
+}
+
+.about-image {
+  overflow: hidden;
+  border-radius: 1rem;
 }
 
 .about-text h2 {
@@ -577,8 +584,9 @@ button {
   }
 
   .hero {
-    min-height: 75vh;
-    padding-top: 7rem;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+    padding: 0;
   }
 
   .section {
@@ -602,7 +610,7 @@ button {
   }
 
   .hero {
-    min-height: 60vh;
+    min-height: 0;
   }
 
   .hero-actions {

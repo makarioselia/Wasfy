@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 const imagePath = (folder, fileName) => `/ProjectsImg/${folder}/${fileName}`
 
@@ -6,7 +6,7 @@ const projects = [
   {
     title: 'Residential Apartment',
     category: 'Residential',
-    location: 'Sohag, Egypt',
+    location: 'Hurghada, Egypt',
     image: imagePath('p1', '2.jpeg'),
     images: [
       imagePath('p1', '2.jpeg'),
@@ -59,7 +59,7 @@ const projects = [
   {
     title: 'Modern Villa',
     category: 'Residential',
-    location: 'Sohag, Egypt',
+    location: 'Cairo, Egypt',
     image: imagePath('p4', '1.jpeg'),
     images: [
       imagePath('p4', '1.jpeg'),
@@ -98,6 +98,19 @@ const projects = [
     ],
     scope: ['Living Room', 'Bedrooms', 'Kitchen', 'Dining Area'],
   },
+    {
+    title: 'Audi Corporate Office',
+    category: 'Commercial / Corporate',
+    image: imagePath('p5', '1.jpeg'),
+    images: [
+      imagePath('p6', '3.jpeg'),
+      imagePath('p6', '1.jpeg'),
+      imagePath('p6', '2.jpeg'),
+      imagePath('p6', '4.jpeg'),
+      imagePath('p6', '5.jpeg'),
+    ],
+    scope: ['Living Room', 'Bedrooms', 'Kitchen', 'Dining Area'],
+  },
 ]
 
 
@@ -114,6 +127,8 @@ function ProjectCarousel({ project }) {
   const images = project.images?.length ? project.images : project.image ? [project.image] : []
   const [currentImage, setCurrentImage] = useState(0)
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
+  const touchStartX = useRef(null)
+  const suppressClick = useRef(false)
 
   if (!images.length) {
     return <div className="project-image-placeholder">Image coming soon</div>
@@ -122,13 +137,34 @@ function ProjectCarousel({ project }) {
   const showPrevious = () => setCurrentImage((index) => (index - 1 + images.length) % images.length)
   const showNext = () => setCurrentImage((index) => (index + 1) % images.length)
   const closeLightbox = () => setIsLightboxOpen(false)
+  const handleTouchStart = (event) => {
+    touchStartX.current = event.touches[0].clientX
+  }
+  const handleTouchEnd = (event) => {
+    if (touchStartX.current === null || images.length < 2) return
+
+    const distance = event.changedTouches[0].clientX - touchStartX.current
+    touchStartX.current = null
+
+    if (Math.abs(distance) < 40) return
+    suppressClick.current = true
+    if (distance < 0) showNext()
+    else showPrevious()
+  }
+  const openLightbox = () => {
+    if (suppressClick.current) {
+      suppressClick.current = false
+      return
+    }
+    setIsLightboxOpen(true)
+  }
 
   return (
-    <div className="project-carousel">
+    <div className="project-carousel" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <button
         type="button"
         className="project-image-button"
-        onClick={() => setIsLightboxOpen(true)}
+        onClick={openLightbox}
         aria-label={`Open ${project.title} image ${currentImage + 1} larger`}
       >
         <img src={images[currentImage]} alt={`${project.title} - image ${currentImage + 1}`} loading="lazy" />
@@ -159,7 +195,7 @@ export default function App() {
   return (
     <>
       <nav className="nav">
-        <a href="#" className="logo" onClick={(e) => { e.preventDefault(); scrollTo('home') }}>Kerolos Wasfy</a>
+        <a href="#" className="logo" onClick={(e) => { e.preventDefault(); scrollTo('home') }}>Kerolos Wasfy Abdalla</a>
         <ul className="nav-links">
           {navLinks.map((link) => (
             <li key={link}>
@@ -174,7 +210,7 @@ export default function App() {
       </nav>
 
       <header id="home" className="hero">
-        <img src="/ProjectsImg/Background.jpg" alt="Interior design showcase" className="hero-img" />
+        <img src="/ProjectsImg/BackGround.jpeg" alt="Interior design showcase" className="hero-img" />
         <div className="hero-overlay" />
         {/* <div className="hero-content">
           <p className="label">INTERIOR DESIGN STUDIO</p>
@@ -204,11 +240,12 @@ export default function App() {
 
       <section id="about" className="section about">
         <div className="about-image">
-          <img src="https://picsum.photos/seed/about/700/800" alt="Studio interior" loading="lazy" />
+          <img src="/ProjectsImg/Logo.jpeg" alt="Studio interior" loading="lazy" />
         </div>
         <div className="about-text">
-          <h2>About the Studio</h2>
-          <p>Add your introduction here.</p>
+          <h2>About Me</h2>
+          <p>An interior and exterior design engineer specialized in finishes and familiar with all implementation items, in addition to the ability to work on 3D and 2D programs.</p>
+          <p>A talented site engineer with over two years of specialized experience in interior and exterior finishes works, adept at implementing best practices in the construction and design industry.</p>
           <button className="btn btn-outline" onClick={() => scrollTo('services')}>Discover More</button>
         </div>
       </section>
@@ -250,7 +287,7 @@ export default function App() {
     Facebook
   </a>
 
-  <a href="mailto:makaiouseliaa@gmail.com">
+  <a href="mailto:hkerowasfy05@gmail.com">
     Email
   </a>
 </div>
