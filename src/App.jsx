@@ -302,7 +302,7 @@ export default function App() {
     Facebook
   </a>
 
-  <a href="mailto:hkerowasfy05@gmail.com">
+  <a href="mailto:kerowasfy05@gmail.com">
     Email
   </a>
 </div>
