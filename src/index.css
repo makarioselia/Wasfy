@@ -105,7 +105,7 @@ button {
   justify-content: space-between;
   padding: 1.25rem 5%;
   background: rgba(30, 30, 34, 0.92);
-  backdrop-filter: blur(8px);
+  /* backdrop-filter: blur(8px); */
 }
 
 .logo {
@@ -210,15 +210,155 @@ button {
   overflow: hidden;
 }
 
-.project-card img {
+.project-carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.project-carousel img,
+.project-image-placeholder {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   transition: transform 0.4s ease;
 }
 
-.project-card:hover img {
+.project-image-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.project-image-button img {
+  cursor: zoom-in;
+}
+
+.project-card:hover .project-carousel img {
   transform: scale(1.03);
+}
+
+.project-image-placeholder {
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  width: 2.25rem;
+  height: 2.25rem;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: rgba(30, 30, 34, 0.75);
+  color: var(--text);
+  font-size: 1.15rem;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s;
+}
+
+.project-carousel:hover .carousel-arrow,
+.carousel-arrow:focus-visible {
+  opacity: 1;
+}
+
+.carousel-arrow:hover {
+  background: var(--gold);
+  color: var(--bg);
+}
+
+.carousel-previous {
+  left: 0.75rem;
+}
+
+.carousel-next {
+  right: 0.75rem;
+}
+
+.carousel-counter {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  padding: 0.25rem 0.55rem;
+  background: rgba(30, 30, 34, 0.75);
+  color: var(--text);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 5rem;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.lightbox > img {
+  max-width: min(1100px, 90vw);
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  cursor: default;
+}
+
+.lightbox-close,
+.lightbox-arrow {
+  position: absolute;
+  color: var(--text);
+  background: rgba(30, 30, 34, 0.8);
+  transition: background 0.2s, color 0.2s;
+}
+
+.lightbox-close:hover,
+.lightbox-arrow:hover {
+  background: var(--gold);
+  color: var(--bg);
+}
+
+.lightbox-close {
+  top: 1.25rem;
+  right: 1.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.lightbox-arrow {
+  top: 50%;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+}
+
+.lightbox-previous {
+  left: 1.5rem;
+}
+
+.lightbox-next {
+  right: 1.5rem;
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
 }
 
 .project-info {
