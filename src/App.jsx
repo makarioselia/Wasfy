@@ -123,6 +123,20 @@ const services = [
 
 const navLinks = ['Home', 'Projects', 'About', 'Services', 'Contact']
 
+function ProtectedImage({ className = '', ...props }) {
+  const blockImageAction = (event) => event.preventDefault()
+
+  return (
+    <img
+      {...props}
+      className={`protected-image ${className}`.trim()}
+      draggable="false"
+      onContextMenu={blockImageAction}
+      onDragStart={blockImageAction}
+    />
+  )
+}
+
 function ProjectCarousel({ project }) {
   const images = project.images?.length ? project.images : project.image ? [project.image] : []
   const [currentImage, setCurrentImage] = useState(0)
@@ -167,7 +181,7 @@ function ProjectCarousel({ project }) {
         onClick={openLightbox}
         aria-label={`Open ${project.title} image ${currentImage + 1} larger`}
       >
-        <img src={images[currentImage]} alt={`${project.title} - image ${currentImage + 1}`} loading="lazy" />
+        <ProtectedImage src={images[currentImage]} alt={`${project.title} - image ${currentImage + 1}`} loading="lazy" />
       </button>
       {images.length > 1 && (
         <>
@@ -180,7 +194,7 @@ function ProjectCarousel({ project }) {
         <div className="lightbox" role="dialog" aria-modal="true" aria-label={`${project.title} gallery`} onClick={closeLightbox}>
           <button type="button" className="lightbox-close" onClick={closeLightbox} aria-label="Close image">&times;</button>
           <button type="button" className="lightbox-arrow lightbox-previous" onClick={(event) => { event.stopPropagation(); showPrevious() }} aria-label="Previous image">&#8592;</button>
-          <img src={images[currentImage]} alt={`${project.title} - image ${currentImage + 1}`} onClick={(event) => event.stopPropagation()} />
+          <ProtectedImage src={images[currentImage]} alt={`${project.title} - image ${currentImage + 1}`} onClick={(event) => event.stopPropagation()} />
           <button type="button" className="lightbox-arrow lightbox-next" onClick={(event) => { event.stopPropagation(); showNext() }} aria-label="Next image">&#8594;</button>
           <div className="lightbox-counter">{currentImage + 1} / {images.length}</div>
         </div>
@@ -193,6 +207,13 @@ export default function App() {
   const [isSending, setIsSending] = useState(false)
   const [formStatus, setFormStatus] = useState('')
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+
+  const blockImageShortcuts = (event) => {
+    const key = event.key.toLowerCase()
+    if ((event.ctrlKey || event.metaKey) && ['s', 'u', 'p'].includes(key)) {
+      event.preventDefault()
+    }
+  }
 
   const handleContactSubmit = (event) => {
     event.preventDefault()
@@ -207,7 +228,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <div onKeyDown={blockImageShortcuts}>
       <nav className="nav">
         <a href="#" className="logo" onClick={(e) => { e.preventDefault(); scrollTo('home') }}>Kerolos Wasfy Abdalla</a>
         <ul className="nav-links">
@@ -224,7 +245,7 @@ export default function App() {
       </nav>
 
       <header id="home" className="hero">
-        <img src="/ProjectsImg/BackGround.jpeg" alt="Interior design showcase" className="hero-img" />
+        <ProtectedImage src="/ProjectsImg/BackGround.jpeg" alt="Interior design showcase" className="hero-img" />
         <div className="hero-overlay" />
         {/* <div className="hero-content">
           <p className="label">INTERIOR DESIGN STUDIO</p>
@@ -254,7 +275,7 @@ export default function App() {
 
       <section id="about" className="section about">
         <div className="about-image">
-          <img src="/ProjectsImg/Logo.jpeg" alt="Studio interior" loading="lazy" />
+          <ProtectedImage src="/ProjectsImg/Logo.jpeg" alt="Studio interior" loading="lazy" />
         </div>
         <div className="about-text">
           <h2>About Me</h2>
@@ -314,6 +335,6 @@ export default function App() {
         <p className="footer-tagline">Creating timeless spaces through thoughtful design.</p>
         <p className="copyright">&copy; {new Date().getFullYear()} STUDIO. All rights reserved.</p>
       </footer>
-    </>
+    </div>
   )
 }
